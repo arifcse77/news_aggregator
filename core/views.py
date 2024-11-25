@@ -21,7 +21,7 @@ class NewsSourceViewSet(viewsets.ModelViewSet):
 class ArticleViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['source', 'topics', 'persons', 'organizations', 'locations']
     search_fields = ['title', 'description']
     ordering_fields = ['publication_date', 'created_at']

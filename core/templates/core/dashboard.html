@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News Aggregator Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6 text-center">News Aggregator Dashboard</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- News Sources -->
+            <div class="bg-white shadow rounded-lg p-4">
+                <h2 class="text-xl font-semibold mb-4">News Sources</h2>
+                <ul>
+                    {% for source in sources %}
+                    <li class="mb-2 pb-2 border-b">
+                        <span class="font-medium">{{ source.name }}</span>
+                        <span class="text-sm text-gray-500 block">{{ source.url }}</span>
+                        <span class="text-xs text-gray-400">
+                            Last Fetched: {{ source.last_fetched|default:"Never" }}
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Recent Articles -->
+            <div class="bg-white shadow rounded-lg p-4 md:col-span-2">
+                <h2 class="text-xl font-semibold mb-4">Recent Articles</h2>
+                <div class="space-y-4">
+                    {% for article in articles %}
+                    <div class="border-b pb-3">
+                        <a href="{{ article.url }}" target="_blank" class="text-lg font-medium text-blue-600 hover:underline">
+                            {{ article.title }}
+                        </a>
+                        <p class="text-sm text-gray-600 mb-2">{{ article.description|truncatechars:200 }}</p>
+                        <div class="flex justify-between text-xs text-gray-500">
+                            <span>Source: {{ article.source_name }}</span>
+                            <span>{{ article.publication_date|date:"F d, Y" }}</span>
+                        </div>
+                        {% if article.topics %}
+                        <div class="mt-2">
+                            <span class="text-xs font-semibold mr-2">Topics:</span>
+                            {% for topic in article.topics %}
+                            <span class="bg-gray-200 rounded-full px-2 py-1 text-xs mr-1">{{ topic }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <p class="text-center text-gray-500">No articles found.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
